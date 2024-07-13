@@ -1,0 +1,73 @@
+database queries
+
+create database DB_LIBRERIA;
+USE DB_LIBRERIA;
+
+Create table tbl_libro(
+id_libro int auto_increment primary key,
+ISBN bigint not null unique,
+titulo varchar(100) not null,
+autor varchar(100) not null,
+precio decimal(10,2), 
+estatus varchar(20)
+);
+
+
+DELIMITER ;;
+create procedure sp_display_by_price(in _precio_mas_bajo decimal(10,2), _precio_mas_alto decimal(10,2))
+begin
+	select * 
+    from tbl_libro
+    where precio between _precio_mas_bajo and _precio_mas_alto;
+end;;
+
+DELIMITER ;
+
+---------------------------------------------------------------------------------------------------------
+USE DB_LIBRERIA;
+
+create table tbl_miembro(
+id_miembro int auto_increment primary key,
+nombre varchar(100) not null,
+edad tinyint not null,
+telefono varchar(15) not null,
+email varchar(100)
+);
+
+---------------------------------------------------------------------------------------------------------
+USE DB_LIBRERIA;
+
+create table tbl_prestamo(
+id_prestamo int auto_increment primary key,
+id_miembro int,
+id_libro int,
+fecha_prestamo date,
+fecha_devolucion date,
+disponible varchar(10),
+foreign key (id_miembro) references tbl_miembro (id_miembro),
+foreign key (id_libro) references tbl_libro (id_libro)
+);
+
+Delimiter ;;
+create procedure sp_ver_historial(in _id_miembro int)
+BEGIN
+select p.id_prestamo, p.id_miembro, m.nombre, p.id_libro, l.titulo, p.fecha_prestamo, p.fecha_devolucion
+from tbl_prestamo p inner join tbl_miembro m
+on p.id_miembro = m.id_miembro
+inner join tbl_libro l
+on p.id_libro = l.id_libro
+where p.id_miembro = _id_miembro;
+END;;
+
+Delimiter ;
+
+Delimiter ;;
+create procedure sp_ver_disponibilidad_libros(in _id_libro int)
+BEGIN
+select id_libro
+from tbl_libro
+where id_libro = _id_libro and estatus = "Disponible";
+END;;
+
+Delimiter ;
+
