@@ -32,7 +32,7 @@ public class LibroDAO {
 
 	
 	public void actualizarIsbn(int idLibro, long nuevoIsbn) throws SQLException {
-		String sql = "update tbl_libro set ISBM = ? where id_libro = ?";
+		String sql = "update tbl_libro set ISBN = ? where id_libro = ?";
 		
 		try (Connection connection = DatabaseConnection.getInstance().getConnection()) {
 			PreparedStatement statement = connection.prepareStatement(sql);

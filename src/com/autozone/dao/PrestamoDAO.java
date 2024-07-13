@@ -169,7 +169,8 @@ public class PrestamoDAO {
 		}
 	}
 	
-	public void verDisponibilidadLibros(int idLibro) throws SQLException{
+	public boolean verDisponibilidadLibros(int idLibro) throws SQLException{
+		boolean res = false;
 		String sql = "{call sp_ver_disponibilidad_libros(?)}";
 		
 		try(Connection connection = DatabaseConnection.getInstance().getConnection()) {
@@ -181,14 +182,11 @@ public class PrestamoDAO {
 			ResultSet rs = statement.getResultSet();
 			if (rs.next()) {
 				
-				System.out.println("El libro esta disponible");
-				
-			}else {
-				
-				System.out.println("El libro no esta disponible");
+				res=true;
 				
 			}
 		}
+		return res;
 			
 		}
 

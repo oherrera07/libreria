@@ -1,6 +1,7 @@
 package com.autozone.principal;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -41,6 +42,9 @@ public class PrincipalMiembro {
 					String nombre = myInput.nextLine();
 					if (nombre == null || nombre == "")
 						throw new NullPointerException("El valor no puede ser nulo o vacio");
+					if(!nombre.matches("[A-Z]*")) 
+						throw new InputMismatchException("Ingrese un nombre valido");
+
 					System.out.println("Ingresa la edad: ");
 					int edad = Integer.parseInt(myInput.nextLine());
 					System.out.println("Ingresa el telefono: ");
@@ -52,7 +56,7 @@ public class PrincipalMiembro {
 
 					Miembro miembro = new Miembro(nombre, edad, telefono, email);
 					miembroDAO.agregarMiembro(miembro);
-				} catch (NumberFormatException | NullPointerException | SQLException e) {
+				} catch (NullPointerException | SQLException | IllegalArgumentException  e) {
 					System.out.println("error en los datos");
 					e.printStackTrace();
 				}

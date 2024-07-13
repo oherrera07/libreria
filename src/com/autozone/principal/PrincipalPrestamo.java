@@ -47,6 +47,10 @@ public class PrincipalPrestamo {
 					System.err.println("El Libro no existe en la base de datos");
 					break;
 				}
+				if(!prestamoDAO.verDisponibilidadLibros(idLibro)){
+					System.out.println("Libro no disponible");
+					break;
+				}
 				
 				Date fechaPrestamo = Date.valueOf(LocalDate.now());
 				Prestamo prestamo = new Prestamo(idMiembro, idLibro, fechaPrestamo, null,"No");
@@ -110,9 +114,10 @@ public class PrincipalPrestamo {
 				
 				if(prestamoDAO.verificarExistenciaLibro(idLibro)){
 					
-					prestamoDAO.verDisponibilidadLibros(idLibro);
-					{
-						
+					if(prestamoDAO.verDisponibilidadLibros(idLibro)) {
+						System.out.println("El libro si esta disponible");
+					}else {
+						System.out.println("Libro no disponible");
 					}
 					
 				}else {
